@@ -1,9 +1,22 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+MixTrack.delete_all
+Mix.delete_all
+Track.delete_all
+Label.delete_all
+
+libertas = Label.create!(name: "Libertas Music")
+mango = Label.create!(name: "Mango Alley")
+
+t1 = Track.create!(title: "Breath of Life (Papa Kuma Remix)", artist: "Papa Kuma", label: libertas, isrc: "MOCKISRC001", pool_eligible: true)
+t2 = Track.create!(title: "Coil", artist: "Dowden & Ric Niels", label: mango, isrc: "MOCKISRC002", pool_eligible: true)
+t3 = Track.create!(title: "Outside Pool Track", artist: "Someone Else", label: libertas, isrc: "MOCKISRC003", pool_eligible: false)
+
+mix = Mix.create!(
+  title: "MixVault Demo Session 001",
+  dj_name: "Papa Kuma",
+  duration_seconds: 3600,
+  audio_url: "/uploads/mock_mix_001.mp3",
+  status: :draft
+)
+
+MixTrack.create!(mix: mix, track: t1, position: 1, start_seconds: 0)
+MixTrack.create!(mix: mix, track: t2, position: 2, start_seconds: 480)
