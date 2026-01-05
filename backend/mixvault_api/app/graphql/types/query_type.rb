@@ -26,3 +26,5 @@ module Types
     end
   end
 end
+
+# TODO: Add filters / pagination later
