@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_06_021114) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_11_191736) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -22,11 +22,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_06_021114) do
 
   create_table "mix_tracks", force: :cascade do |t|
     t.datetime "created_at", null: false
+    t.integer "end_seconds"
     t.bigint "mix_id", null: false
     t.integer "position", null: false
     t.integer "start_seconds", null: false
     t.bigint "track_id", null: false
     t.datetime "updated_at", null: false
+    t.index ["mix_id", "position"], name: "index_mix_tracks_on_mix_id_and_position", unique: true
     t.index ["mix_id", "track_id"], name: "index_mix_tracks_on_mix_id_and_track_id", unique: true
     t.index ["mix_id"], name: "index_mix_tracks_on_mix_id"
     t.index ["track_id"], name: "index_mix_tracks_on_track_id"

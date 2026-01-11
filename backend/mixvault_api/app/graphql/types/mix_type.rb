@@ -14,6 +14,7 @@ module Types
 
     field :label, Types::LabelType, null: true
     field :tracks, [Types::TrackType], null: true
+    field :mix_tracks, [Types::MixTrackType], null: false
 
     def duration
       total = object.duration_seconds || 0
