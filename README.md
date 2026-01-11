@@ -31,5 +31,28 @@ Publishing is simulated.
 - Postgres (Docker)
 - Next.js frontend
 
-## Status
-Early exploration / learning project.
+## Project Status
+
+MixVault backend foundation is in place.
+
+### Implemented
+- PostgreSQL database (Docker)
+- Rails 8 API
+- Core domain models:
+  - Label
+  - Track
+  - Mix
+  - MixTrack (join table)
+- Proper relational modeling:
+  - Labels → Tracks
+  - Mixes ↔ Tracks (many-to-many)
+- GraphQL API using graphql-ruby
+- GraphQL types and root queries
+- GraphiQL enabled for local development
+- Seed data for local testing
+
+### In Progress / Planned
+- Track timing & timecode representation
+- Computed GraphQL fields (duration formatting)
+- Mutations (creating mixes, assigning tracks)
+- Authentication & authorization
