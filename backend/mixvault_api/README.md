@@ -215,3 +215,27 @@ docker exec -it mixvault_db psql -U postgres -d mixvault_development
 \dt
 \d mix_tracks
 ```
+
+## Troubleshooting & Gotchas
+
+### Track or Mix not found in GraphQL mutations
+
+**If you see an error like:**
+“Track not found”
+
+This is usually because the ID you used does not exist in the database.
+
+PostgreSQL auto-increment IDs do **not reset** when records are deleted or reseeded.
+For example, even if there are only 3 tracks, their IDs might be `7, 8, 9` instead of `1, 2, 3`.
+
+**Solution:**
+Query the existing IDs first:
+
+```graphql
+query {
+  tracks { id title }
+  mixes { id title }
+}
+```
+Then use one of those IDs in your mutation.
+This is expected behavior and not a bug.
