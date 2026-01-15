@@ -14,4 +14,19 @@ class MixTrack < ApplicationRecord
     return if end_seconds.nil?
     errors.add(:end_seconds, "must be > start_seconds") if end_seconds <= start_seconds
   end 
+
+  validate :start_time_must_be_after_previous_track
+
+private
+
+  def start_time_must_be_after_previous_track
+    previous = mix.mix_tracks
+                  .where("position < ?", position)
+                  .order(position: :desc)
+                  .first
+
+    return unless previous && start_seconds < previous.start_seconds
+
+    errors.add(:start_seconds, "must be after the previous track starts")
+  end           
 end
