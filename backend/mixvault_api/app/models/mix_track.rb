@@ -7,27 +7,39 @@ class MixTrack < ApplicationRecord
   validates :position, numericality: { only_integer: true, greater_than: 0 }
   validates :start_seconds, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validates :end_seconds, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
+
+
   validates :track_id, uniqueness: { scope: :mix_id, message: "is already in this mix" }
+  validates :position, uniqueness: { scope: :mix_id, message: "is already taken in this mix" }
 
   validate :end_after_start
+  validate :start_seconds_must_fit_position_order
+
+  private
 
   def end_after_start
     return if end_seconds.nil?
     errors.add(:end_seconds, "must be > start_seconds") if end_seconds <= start_seconds
   end 
 
-  validate :start_time_must_be_after_previous_track
+  def start_seconds_must_fit_position_order
+    return unless mix && position && start_seconds
 
-private
-
-  def start_time_must_be_after_previous_track
     previous = mix.mix_tracks
                   .where("position < ?", position)
                   .order(position: :desc)
                   .first
 
-    return unless previous && start_seconds < previous.start_seconds
+    if previous && start_seconds < previous.start_seconds
+      errors.add(:start_seconds, "must be >= previous track start time (position #{previous.position})")
+    end 
 
-    errors.add(:start_seconds, "must be after the previous track starts")
+    nxt = mix.mix_tracks
+              .where("position > ?", position)
+              .order(position: :asc)
+              .first
+    if nxt && start_seconds > nxt.start_seconds
+      errors.add(:start_seconds, "must be <= next track start time (position #{nxt.position})")
+    end
   end           
 end
