@@ -7,6 +7,7 @@ class MixTrack < ApplicationRecord
   validates :position, numericality: { only_integer: true, greater_than: 0 }
   validates :start_seconds, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validates :end_seconds, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
+  validates :track_id, uniqueness: { scope: :mix_id, message: "is already in this mix" }
 
   validate :end_after_start
 

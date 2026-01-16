@@ -17,6 +17,9 @@ module Mutations
       track = Track.find_by(id: track_id)
       return { mix_track: nil, errors: ["Track not found"] } unless track
 
+      existing = MixTrack.find_by(mix_id: mix_id, track_id: track_id)
+      return { mix_track: existing, errors: ["Track is already in this mix"] } if existing
+
       mix_track = MixTrack.new(
         mix: mix,
         track: track,
