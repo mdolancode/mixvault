@@ -30,16 +30,23 @@ class MixTrack < ApplicationRecord
                   .order(position: :desc)
                   .first
 
-    if previous && start_seconds < previous.start_seconds
-      errors.add(:start_seconds, "must be >= previous track start time (position #{previous.position})")
+    if previous && start_seconds <= previous.start_seconds
+      errors.add(:start_seconds, "must be > previous track start time (position #{previous.position})")
     end 
 
     nxt = mix.mix_tracks
               .where("position > ?", position)
               .order(position: :asc)
               .first
-    if nxt && start_seconds > nxt.start_seconds
-      errors.add(:start_seconds, "must be <= next track start time (position #{nxt.position})")
+    if nxt 
+      if start_seconds >= nxt.start_seconds
+        errors.add(:start_seconds, "must be < next track start time (position #{nxt.position})")
+      end
+    else
+      # no next track — keep it within the mix length (if known)
+      if mix.respond_to?(:duration_seconds) && mix.duration_seconds.present? && start_seconds >= mix.duration_seconds
+        errors.add(:start_seconds, "must be < mix duration (#{mix.duration_seconds}s)")
+      end
     end
   end           
 end
