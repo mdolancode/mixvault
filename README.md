@@ -56,3 +56,18 @@ MixVault backend foundation is in place.
 - Computed GraphQL fields (duration formatting)
 - Mutations (creating mixes, assigning tracks)
 - Authentication & authorization
+
+## Domain Logic Implemented
+- MixTrack timing validation (start times enforced by position)
+- Prevent duplicate tracks in a mix
+- Enforce mix duration bounds
+- GraphQL mutations:
+  - createMix
+  - addTrackToMix
+  - updateTrackInMix
+- All logic validated via GraphiQL
+
+## Known Domain Gaps (Intentional)
+- Track removal from a mix (`removeTrackFromMix`)
+- Position re-normalization after removal
+- Timing adjustments cascading after deletion or reorder
