@@ -3,18 +3,18 @@ module Types
     field :id, ID, null: false
     field :title, String, null: false
 
-    # Keep GraphQL naming camelCase, map to Rails attribute with `method:`
-    field :recordedAt, GraphQL::Types::ISO8601DateTime, null: true, method: :recorded_at
-
-    field :djName, String, null: false, method: :dj_name
-    field :durationSeconds, Integer, null: false, method: :duration_seconds
-
-    # Optional: friendly display like "60:00"
+    field :recorded_at, GraphQL::Types::ISO8601DateTime, null: true
+    field :dj_name, String, null: false
+    field :duration_seconds, Integer, null: false
     field :duration, String, null: false
 
     field :label, Types::LabelType, null: true
     field :tracks, [Types::TrackType], null: true
     field :mix_tracks, [Types::MixTrackType], null: false
+
+    def mix_tracks
+      object.mix_tracks.order(:position)
+    end
 
     def duration
       total = object.duration_seconds || 0
