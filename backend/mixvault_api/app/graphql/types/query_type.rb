@@ -21,8 +21,17 @@ module Types
 
     # Mixes
     field :mixes, [Types::MixType], null: false
+    
+    field :mix, Types::MixType, null: true do
+      argument :id, ID, required: true
+    end
+
     def mixes
       Mix.all
+    end
+
+    def mix(id:)
+      Mix.find_by(id: id)
     end
   end
 end
