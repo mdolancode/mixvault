@@ -3,6 +3,7 @@ module Types
     field :id, ID, null: false
     field :position, Integer, null: false
     field :start_seconds, Integer, null: false
+    field :end_seconds, Integer, null: true
 
     field :start_timecode, String, null: false
     field :end_timecode, String, null: true
