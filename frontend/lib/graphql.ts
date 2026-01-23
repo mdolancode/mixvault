@@ -25,7 +25,8 @@ export async function gql<T>(
   const json: GraphQLResponse<T> = await res.json();
 
   if (!res.ok) {
-    throw new Error(`HTTP ${res.status}`);
+    const text = await res.text().catch(() => "");
+    throw new Error(`HTTP ${res.status}${text ? `: ${text}` : ""}`);
   }
 
   if (json.errors?.length) {
