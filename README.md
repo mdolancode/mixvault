@@ -1,73 +1,118 @@
 # MixVault (Prototype)
 
-MixVault is a small prototype that models how a DJ uploads a finished
-continuous mix, builds a verified tracklist from a promo pool,
-and submits it for distribution to streaming platforms.
+MixVault is a prototype that models how a DJ uploads a finished
+continuous mix and converts it into a structured, verified tracklist
+with exact timing metadata.
 
-This app does NOT integrate with real Spotify or Apple Music APIs.
-Publishing is simulated.
+Instead of treating a DJ mix as a single opaque audio file,
+MixVault breaks it down into ordered tracks with start times,
+durations, and attribution — making the mix explorable,
+verifiable, and ready for downstream publishing workflows.
 
-## Goals
-- Model real DJ mix workflows
-- Enforce promo pool track eligibility
-- Generate attribution reports
-- Demonstrate Rails + GraphQL + React fundamentals
+This project focuses on **domain modeling and API design** rather than
+audio processing or real platform integrations.
 
-## Out of Scope
-- Real audio processing
-- Real platform delivery
+---
+
+## Why MixVault Exists
+
+DJ mixes are central to electronic music culture, yet most platforms
+treat them as unstructured audio with little visibility into
+track attribution, timing, or rights.
+
+MixVault explores what a **first-class mix data model** could look like:
+- Explicit track ordering
+- Precise timestamps
+- Validation against a known promo pool
+- Clear separation between submission and publishing
+
+---
+
+## Scope & Constraints
+
+### In Scope
+- Modeling real DJ mix workflows
+- Enforcing track ordering and timing constraints
+- Validating mixes against an approved track catalog
+- Exposing clean GraphQL APIs for frontend consumption
+
+### Explicitly Out of Scope
+- Audio processing or waveform analysis
 - Fingerprinting / Content ID
-- Real royalty accounting
+- Real Spotify / Apple Music delivery
+- Royalty calculations or payouts
+
+Publishing and verification are **simulated** to keep focus on core logic.
+
+---
 
 ## Core Workflow
-1. DJ uploads a finished mix (URL + duration)
-2. DJ builds a tracklist using promo pool tracks only
-3. DJ submits mix
-4. Admin verifies and publishes (mock)
 
-## Tech
+1. DJ creates a mix (metadata + duration)
+2. DJ builds a tracklist using approved promo tracks only
+3. Each track is assigned a position and start time
+4. System validates ordering, timing, and duration bounds
+5. Mix is marked ready for publishing (mocked)
+
+---
+
+## Tech Stack
+
+### Backend
 - Rails API
-- GraphQL
-- Postgres (Docker)
-- Next.js frontend
+- PostgreSQL (Dockerized)
+- GraphQL (graphql-ruby)
+- Strong domain validation at the model layer
+
+### Frontend
+- Next.js (App Router)
+- React + TypeScript
+- Minimal UI focused on consuming GraphQL data
+
+---
+
+## Domain Model
+
+- **Label**
+- **Track** (belongs to Label)
+- **Mix**
+- **MixTrack** (join model with position & timing)
+
+Key design choice:
+> Timing and ordering rules live in the domain layer,
+> not in the frontend.
+
+---
+
+## Domain Logic Implemented
+
+- Enforced track ordering by position
+- Start/end time validation between adjacent tracks
+- Prevention of duplicate tracks in a mix
+- Mix duration bounds enforced
+- GraphQL mutations:
+  - `createMix`
+  - `addTrackToMix`
+  - `updateTrackInMix`
+  - `removeTrackFromMix`
+- All logic validated via GraphiQL and frontend queries
+
+---
+
+## Known Gaps (Intentional)
+
+These are **deliberately omitted** to keep the prototype focused:
+
+- Automatic position re-normalization after deletions
+- Cascading time recalculation on reorder
+- Authentication / authorization
+
+These would be natural next steps in a production system.
+
+---
 
 ## Project Status
 
-MixVault backend foundation is in place.
-
-### Implemented
-- PostgreSQL database (Docker)
-- Rails 8 API
-- Core domain models:
-  - Label
-  - Track
-  - Mix
-  - MixTrack (join table)
-- Proper relational modeling:
-  - Labels → Tracks
-  - Mixes ↔ Tracks (many-to-many)
-- GraphQL API using graphql-ruby
-- GraphQL types and root queries
-- GraphiQL enabled for local development
-- Seed data for local testing
-
-### In Progress / Planned
-- Track timing & timecode representation
-- Computed GraphQL fields (duration formatting)
-- Mutations (creating mixes, assigning tracks)
-- Authentication & authorization
-
-## Domain Logic Implemented
-- MixTrack timing validation (start times enforced by position)
-- Prevent duplicate tracks in a mix
-- Enforce mix duration bounds
-- GraphQL mutations:
-  - createMix
-  - addTrackToMix
-  - updateTrackInMix
-- All logic validated via GraphiQL
-
-## Known Domain Gaps (Intentional)
-- Track removal from a mix (`removeTrackFromMix`)
-- Position re-normalization after removal
-- Timing adjustments cascading after deletion or reorder
+The backend domain model and API surface are complete enough
+to support a real frontend and demonstrate production-style thinking.
+The frontend is intentionally small and focused on API consumption.
