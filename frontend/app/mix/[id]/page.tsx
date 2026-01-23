@@ -37,57 +37,24 @@ export default async function MixPage({
   const { mix } = data;
 
   return (
-<main style={{ padding: 24, fontFamily: "system-ui", maxWidth: 720 }}>
+    <main style={{ padding: 24, fontFamily: "system-ui" }}>
       <h1 style={{ marginBottom: 6 }}>{mix.title}</h1>
-
-      <div style={{ opacity: 0.75, marginBottom: 8 }}>
+      <div style={{ opacity: 0.7, marginBottom: 16 }}>
         {mix.djName} • {mix.duration}
       </div>
 
-      {/* 1) Track count */}
-      <div style={{ opacity: 0.75, marginBottom: 16 }}>
-        {trackCount} {trackCount === 1 ? "track" : "tracks"}
-      </div>
-
-      {/* 3) Empty state */}
-      {trackCount === 0 ? (
-        <div
-          style={{
-            border: "1px solid rgba(255,255,255,0.12)",
-            borderRadius: 12,
-            padding: 16,
-            opacity: 0.9,
-          }}
-        >
-          <div style={{ fontWeight: 600, marginBottom: 6 }}>
-            No tracks yet
-          </div>
-          <div style={{ opacity: 0.75 }}>
-            Add tracks to this mix to see a timestamped tracklist here.
-          </div>
-        </div>
-      ) : (
-        <ol style={{ lineHeight: 1.7, paddingLeft: 18 }}>
-          {mix.mixTracks.map((mt) => (
-            <li key={mt.id} style={{ marginBottom: 10 }}>
-              <div>
-                <strong>
-                  {mt.startTimecode}
-                  {mt.endTimecode ? `–${mt.endTimecode}` : ""}
-                </strong>{" "}
-                — {mt.track.artist} – {mt.track.title}
-              </div>
-
-              {/* 2) Per-track duration */}
-              {mt.duration ? (
-                <div style={{ opacity: 0.75, fontSize: 14 }}>
-                  Duration: {mt.duration}
-                </div>
-              ) : null}
-            </li>
-          ))}
-        </ol>
-      )}
+      <ol style={{ lineHeight: 1.6 }}>
+        {mix.mixTracks.map((mt) => (
+          <li key={mt.id}>
+            <strong>
+              {mt.startTimecode}
+              {mt.endTimecode ? `–${mt.endTimecode}` : ""}
+            </strong>{" "}
+            — {mt.track.artist} – {mt.track.title}
+            {mt.duration ? ` (${mt.duration})` : ""}
+          </li>
+        ))}
+      </ol>
     </main>
   );
 }
