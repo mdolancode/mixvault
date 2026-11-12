@@ -1,0 +1,12 @@
+# MixVault Project Rules
+
+## Stack & Commands
+- Backend: Ruby on Rails 8.1 API + PostgreSQL + graphql-ruby (located in `backend/mixvault_api`).
+- Frontend: Next.js App Router + React + TypeScript (located in `frontend`).
+- Run backend tests with `bin/rails test` (keep `minitest` pinned to `~> 5.0` for Rails 8.1 runner compatibility).
+- Format backend code with `bundle exec rubocop` before finishing tasks.
+
+## Architecture & Conventions
+- Keep all track ordering, timing bounds, and duplicate checks inside ActiveRecord models (`MixTrack`), never in GraphQL mutations or frontend components.
+- Use 2-space indentation for Ruby files.
+- Never run `bin/rails db:seed` directly against the development database because it executes `delete_all` on existing records.
