@@ -88,6 +88,8 @@ Key design choice:
 
 - Enforced track ordering by position
 - Start/end time validation between adjacent tracks
+- `end_seconds` validated against the next track's start time and,
+  for the last track, the total mix duration (when set)
 - Prevention of duplicate tracks in a mix
 - Mix duration bounds enforced
 - GraphQL mutations:
@@ -96,6 +98,9 @@ Key design choice:
   - `updateTrackInMix`
   - `removeTrackFromMix`
 - All logic validated via GraphiQL and frontend queries
+
+> The `MixTrack` `end_seconds` boundary rules are verified with
+> automated Rails model tests (`bin/rails test`).
 
 ---
 
