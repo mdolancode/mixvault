@@ -9,23 +9,23 @@ module Mutations
     argument :end_seconds, Integer, required: false
 
     field :mix_track, Types::MixTrackType, null: true
-    field :errors, [String], null: false
+    field :errors, [ String ], null: false
 
-    def resolve(mix_id:, track_id:, position: nil, start_seconds: nil, end_seconds: nil)
+    def resolve(mix_id:, track_id:, **args)
       mix = Mix.find_by(id: mix_id)
-      return { mix_track: nil, errors: ["Mix not found"] } unless mix
+      return { mix_track: nil, errors: [ "Mix not found" ] } unless mix
 
       track = Track.find_by(id: track_id)
-      return { mix_track: nil, errors: ["Track not found"] } unless track
+      return { mix_track: nil, errors: [ "Track not found" ] } unless track
 
       mix_track = MixTrack.find_by(mix_id: mix.id, track_id: track.id)
-      return { mix_track: nil, errors: ["Track is not in this mix"] } unless mix_track
+      return { mix_track: nil, errors: [ "Track is not in this mix" ] } unless mix_track
 
       attrs = {}
-      attrs[:position] = position unless position.nil?
-      attrs[:start_seconds] = start_seconds unless start_seconds.nil?
-      # allow explicitly clearing end_seconds by passing null from GraphQL
-      attrs[:end_seconds] = end_seconds if defined?(end_seconds)
+      attrs[:position] = args[:position] unless args[:position].nil?
+      attrs[:start_seconds] = args[:start_seconds] unless args[:start_seconds].nil?
+      # only touch end_seconds when the client sent it; an explicit null clears it
+      attrs[:end_seconds] = args[:end_seconds] if args.key?(:end_seconds)
 
       if mix_track.update(attrs)
         { mix_track: mix_track, errors: [] }

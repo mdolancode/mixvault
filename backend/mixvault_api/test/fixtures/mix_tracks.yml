@@ -4,10 +4,12 @@ one:
   mix: one
   track: one
   position: 1
-  start_seconds: 1
+  start_seconds: 0
+  end_seconds: 300
 
 two:
   mix: two
   track: two
   position: 1
-  start_seconds: 1
+  start_seconds: 0
+  end_seconds: 300

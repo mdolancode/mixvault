@@ -3,13 +3,13 @@
 one:
   title: MyString
   dj_name: MyString
-  duration_seconds: 1
+  duration_seconds: 3600
   audio_url: MyString
   status: 1
 
 two:
   title: MyString
   dj_name: MyString
-  duration_seconds: 1
+  duration_seconds: 3600
   audio_url: MyString
   status: 1

@@ -49,6 +49,9 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false
 end
 
+# Pinned to minitest 5.x for compatibility with the Rails 8.1 test runner
+gem "minitest", "~> 5.0"
+
 gem "graphql", "~> 2.5"
 
 gem "graphiql-rails", "~> 1.10"
