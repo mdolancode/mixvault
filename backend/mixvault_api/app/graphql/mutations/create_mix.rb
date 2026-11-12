@@ -13,7 +13,7 @@ module Mutations
 
     # OUTPUTS
     field :mix, Types::MixType, null: true
-    field :errors, [String], null: false
+    field :errors, [ String ], null: false
 
     def resolve(title:, dj_name:, duration_seconds:, audio_url: nil, recorded_at: nil)
       mix = Mix.new(

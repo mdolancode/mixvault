@@ -3,6 +3,6 @@ module Types
     field :id, ID, null: false
     field :name, String, null: false
 
-    field :tracks, [Types::TrackType], null: false
+    field :tracks, [ Types::TrackType ], null: false
   end
 end

@@ -39,7 +39,7 @@ mix = Mix.create!(
   duration_seconds: 3600,
   audio_url: "/uploads/mock_mix_001.mp3",
   status: :draft,
-  recorded_at: Time.current   
+  recorded_at: Time.current
 )
 
 MixTrack.create!(mix: mix, track: t1, position: 1, start_seconds: 0)

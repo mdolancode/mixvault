@@ -9,8 +9,8 @@ module Types
     field :duration, String, null: false
 
     field :label, Types::LabelType, null: true
-    field :tracks, [Types::TrackType], null: true
-    field :mix_tracks, [Types::MixTrackType], null: false
+    field :tracks, [ Types::TrackType ], null: true
+    field :mix_tracks, [ Types::MixTrackType ], null: false
 
     def mix_tracks
       object.mix_tracks.order(:position)

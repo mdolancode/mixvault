@@ -8,20 +8,20 @@ module Types
     end
 
     # Labels
-    field :labels, [Types::LabelType], null: false
+    field :labels, [ Types::LabelType ], null: false
     def labels
       Label.all
     end
 
     # Tracks
-    field :tracks, [Types::TrackType], null: false
+    field :tracks, [ Types::TrackType ], null: false
     def tracks
       Track.all
     end
 
     # Mixes
-    field :mixes, [Types::MixType], null: false
-    
+    field :mixes, [ Types::MixType ], null: false
+
     field :mix, Types::MixType, null: true do
       argument :id, ID, required: true
     end

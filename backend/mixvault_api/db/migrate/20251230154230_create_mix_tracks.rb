@@ -9,6 +9,6 @@ class CreateMixTracks < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :mix_tracks, [:mix_id, :track_id], unique: true
+    add_index :mix_tracks, [ :mix_id, :track_id ], unique: true
   end
 end
